@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TestProject</string>
+    <string name="password_check">keep your password?</string>
+    <string name="auto_login_check">auto login?</string>
+</resources>

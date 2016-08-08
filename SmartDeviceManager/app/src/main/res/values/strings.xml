@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">SmartDeviceManager</string>
+    <string name="password_check">keep your account?</string>
+    <string name="auto_login_check">auto login next time?</string>
+</resources>
