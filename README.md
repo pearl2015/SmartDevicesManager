@@ -1,2 +1,5 @@
-# SmartDevicesManager
-SmartDevices the only workspace of my project
+本项目开发一个用来管理基于低耗蓝牙(BLE)开发的智能设备的云管家。以下是每个模块的开发过程
+# 智能设备(低耗蓝牙BLE)的云管家的实现过程
+## 登录与注册
+### 登录
+
