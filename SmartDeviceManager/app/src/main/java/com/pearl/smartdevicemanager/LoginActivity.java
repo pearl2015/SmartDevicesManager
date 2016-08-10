@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.gc.materialdesign.views.CheckBox;
 import com.pearl.smartdevicemanager.beans.IoTUsers;
-import com.pearl.smartdevicemanager.main.MainActivity;
+import com.pearl.smartdevicemanager.main.DrawerActivity;
 import com.pearl.smartdevicemanager.tools.Tools;
 
 import java.util.ArrayList;
@@ -140,7 +140,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Che
             public void onSuccess() {
                 Log.e("TAG", "SUCCESS");
                 Intent intent = new Intent();
-                intent.setClass(LoginActivity.this, MainActivity.class);
+                intent.setClass(LoginActivity.this, DrawerActivity.class);
                 LoginActivity.this.startActivity(intent);
 
             }
