@@ -35,7 +35,7 @@ public class Tools {
     }
 
 
-    public static void writeCheckStatetoHSaredPreferences(SharedPreferences sp, String tag, boolean is_check){
+    public static void writeCheckStatetoSharedPreferences(SharedPreferences sp, String tag, boolean is_check){
         SharedPreferences spw = sp;
         SharedPreferences.Editor editor = sp.edit();
         editor.putBoolean(tag, is_check);

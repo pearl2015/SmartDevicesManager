@@ -1,5 +1,6 @@
 package com.pearl.smartdevicemanager.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -12,17 +13,32 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.pearl.smartdevicemanager.R;
+import com.pearl.smartdevicemanager.tools.FormatTools;
+
+import butterknife.BindView;
 
 
 public class DrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MainView {
+//
+//    @BindView(R.id.fab) FloatingActionButton fab;
+//    @BindView(R.id.drawer_layout) DrawerLayout drawer;
+//    @BindView(R.id.nav_view) NavigationView navigationView;
+//    @BindView(R.id.username_tv) TextView usernname_tv;
+      private String musername;
+      private TextView m_username;
+
+    //
+    private MainPresenter myPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -43,6 +59,17 @@ public class DrawerActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View header = navigationView.getHeaderView(0);
+        m_username = (TextView)header.findViewById(R.id.header_username_tv);
+
+        //从登陆界面获得用户名
+        Intent intent = getIntent();
+        musername = intent.getStringExtra("loginInfo");
+        //显示
+        m_username.setText(musername);
+
+
     }
 
     @Override

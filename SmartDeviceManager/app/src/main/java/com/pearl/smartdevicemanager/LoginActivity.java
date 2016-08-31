@@ -45,12 +45,16 @@ public class LoginActivity extends Activity implements View.OnClickListener, Che
 
     private String email;
     private String password;
+
+    private boolean account_check;
+    private boolean auto_check;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        Bmob.initialize(this, "1f1f8a4eac5575b2b1bf9bde5c2ad719");
+        Bmob.initialize(this, "app key in the bmob");
 
         init();
 
@@ -68,8 +72,11 @@ public class LoginActivity extends Activity implements View.OnClickListener, Che
         //记住用户偏好
         sp = this.getSharedPreferences("userInfo", Context.MODE_WORLD_READABLE);
 
+        account_check = sp.getBoolean("account_check",false);
+        auto_check = sp.getBoolean("auto_login_check",false);
+
         //如果用户上次登录操作选择了记住用户
-        if(sp.getBoolean("account_check",false))
+        if(account_check)
         {
             email_et.setText(sp.getString("email",""));
             password_et.setText(sp.getString("password",""));
@@ -78,21 +85,14 @@ public class LoginActivity extends Activity implements View.OnClickListener, Che
 
 
         //如果用户上次登录选择了自动登录
-//        if(sp.getBoolean("auto_login_check",false))
-//        {
-//            auto_login_check.setChecked(true);
-//            email = sp.getString("email","");
-//            password = sp.getString("password","");
-//            mLogin();
-//        }
+        if(auto_check)
+        {
+            auto_login_check.setChecked(true);
+            email = sp.getString("email","");
+            password = sp.getString("password","");
+            mLogin();
+        }
 
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                password_check.setChecked(sp.getBoolean("account_check",false));
-            }
-        },300);
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -103,13 +103,14 @@ public class LoginActivity extends Activity implements View.OnClickListener, Che
                 // By default we just finish the Activity and log them in automatically
 //                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 //                startActivity(intent);
+                this.finish();
             }
         }
     }
     @Override
     public void onBackPressed() {
         // disable going back to the MainActivity
-        moveTaskToBack(true);
+       // moveTaskToBack(true);
     }
 
 
@@ -141,6 +142,23 @@ public class LoginActivity extends Activity implements View.OnClickListener, Che
                 Log.e("TAG", "SUCCESS");
                 Intent intent = new Intent();
                 intent.setClass(LoginActivity.this, DrawerActivity.class);
+
+                //得到用户信息
+                String xUsername= "";
+                BmobUser bmobUser = BmobUser.getCurrentUser(getApplicationContext());
+                if(bmobUser != null){
+                    // 允许用户使用应用
+                    xUsername=bmobUser.getUsername();
+                    Log.e("email", xUsername);
+
+                }else{
+                    //缓存用户对象为空时， 可打开用户注册界面…
+                    Log.e("email", "Unknown......");
+                }
+
+                intent.putExtra("loginInfo",xUsername);
+
+                progressDialog.dismiss();
                 LoginActivity.this.startActivity(intent);
 
             }
@@ -148,28 +166,21 @@ public class LoginActivity extends Activity implements View.OnClickListener, Che
             public void onFailure(int i, String s) {
                 Log.e(i+"", s);
                 Log.e("TAG", "failure2");
+                progressDialog.dismiss();
                 onLoginFailed();
             }
         });
-
-
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
-
     }
 
 
     //登录失败
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
         login_btn.setEnabled(true);
+        email_et.setText("");
+        password_et.setText("");
+
+        return;
     }
 
     public void onLoginSuccess() {
@@ -204,15 +215,12 @@ public class LoginActivity extends Activity implements View.OnClickListener, Che
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.login_btn:
-                //检查是否用户选择保存邮箱和密码
-
-                boolean m_account_check = sp.getBoolean("account_check",false);
-                if(m_account_check!=password_check.isCheck())
-                    Tools.writetoSharedPreferences(sp,email_et.getText().toString(),password_et.getText().toString());
-
                 email = email_et.getText().toString();
                 password = password_et.getText().toString();
-
+                //检查是否用户选择保存邮箱和密码
+                if(account_check){
+                    Tools.writetoSharedPreferences(sp,email,password);
+                }
                 mLogin();
                 break;
             case R.id.link_signup:
@@ -227,12 +235,12 @@ public class LoginActivity extends Activity implements View.OnClickListener, Che
     public void onCheck(CheckBox checkBox, boolean b) {
         switch (checkBox.getId()){
             case R.id.password_check:  //记住用户名和密码
-                boolean isCheck = password_check.isCheck();
-                Tools.writeCheckStatetoHSaredPreferences(sp,"account_check", isCheck);
+                account_check = password_check.isCheck();
+                Tools.writeCheckStatetoSharedPreferences(sp,"account_check", account_check);
                 break;
             case R.id.auto_login_check: //下次自动登录
-                boolean isCheck2 = auto_login_check.isCheck();
-                Tools.writeCheckStatetoHSaredPreferences(sp,"auto_login_check", isCheck2);
+                auto_check = auto_login_check.isCheck();
+                Tools.writeCheckStatetoSharedPreferences(sp,"auto_login_check", auto_check);
                 break;
             default:
                 break;
