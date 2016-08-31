@@ -9,9 +9,14 @@
 3. 使用ButterKnife view注入框架；
 
 ### 注册
-<img src="https://github.com/pearl2015/SmartDevicesManager/blob/master/pic/signup.png?raw=ture" width="40%" height="50%">
+<img src="https://github.com/pearl2015/SmartDevicesManager/blob/master/pic/signup.png?raw=true" width="40%" height="50%">
 
 1. 注册也是使用Bmob云服务提供的接口；
 2. 邮箱认证：Bmob提供的接口。
 
+## 主界面
+<img src="https://github.com/pearl2015/SmartDevicesManager/blob/master/pic/main2.png?raw=ture" width="40%" height="50%">
+
+1. 通过intent将用户信息从登录界面传递到主界面中；
+2. 使用 DrawerLayout 实现 Material Design风格的侧滑
 

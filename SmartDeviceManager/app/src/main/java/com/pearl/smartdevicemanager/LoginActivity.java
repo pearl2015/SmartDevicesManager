@@ -54,7 +54,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Che
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        Bmob.initialize(this, "app key in the bmob");
+        Bmob.initialize(this, "1f1f8a4eac5575b2b1bf9bde5c2ad719");
 
         init();
 
