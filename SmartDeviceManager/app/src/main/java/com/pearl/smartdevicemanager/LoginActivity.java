@@ -159,8 +159,9 @@ public class LoginActivity extends Activity implements View.OnClickListener, Che
                 intent.putExtra("loginInfo",xUsername);
 
                 progressDialog.dismiss();
+                onLoginSuccess();
                 LoginActivity.this.startActivity(intent);
-
+                finish();
             }
             @Override
             public void onFailure(int i, String s) {
@@ -185,7 +186,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Che
 
     public void onLoginSuccess() {
         login_btn.setEnabled(true);
-        finish();
+       // finish();
     }
 
     public boolean validate() {
