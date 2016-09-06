@@ -24,10 +24,4 @@
 5. 用户信息用Serializable序列化，bunble传递；
 
 <img src="https://github.com/pearl2015/SmartDevicesManager/blob/master/pic/user_record.gif?raw=ture" width="40%" height="50%">
-
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 7a847c024a393943eaa7da4fd0612b8dfd2ecd08
-
+ 
