@@ -5,7 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gc.materialdesign.views.CheckBox;
-import com.pearl.smartdevicemanager.beans.IoTUsers;
+import com.pearl.smartdevicemanager.beans.IoTUser;
 import com.pearl.smartdevicemanager.main.DrawerActivity;
 import com.pearl.smartdevicemanager.tools.Tools;
 
@@ -40,7 +40,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Che
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-    private ArrayList<IoTUsers> userlist;
+    private ArrayList<IoTUser> userlist;
     private SharedPreferences sp;
 
     private String email;
@@ -54,7 +54,7 @@ public class LoginActivity extends Activity implements View.OnClickListener, Che
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        Bmob.initialize(this, "1f1f8a4eac5575b2b1bf9bde5c2ad719");
+        Bmob.initialize(this, "bmob中的key");
 
         init();
 
@@ -140,15 +140,16 @@ public class LoginActivity extends Activity implements View.OnClickListener, Che
             @Override
             public void onSuccess() {
                 Log.e("TAG", "SUCCESS");
-                Intent intent = new Intent();
-                intent.setClass(LoginActivity.this, DrawerActivity.class);
+               // intent.setClass(LoginActivity.this, DrawerActivity.class);
 
                 //得到用户信息
                 String xUsername= "";
+                String email="";
                 BmobUser bmobUser = BmobUser.getCurrentUser(getApplicationContext());
                 if(bmobUser != null){
                     // 允许用户使用应用
                     xUsername=bmobUser.getUsername();
+                    email = bmobUser.getEmail();
                     Log.e("email", xUsername);
 
                 }else{
@@ -156,7 +157,17 @@ public class LoginActivity extends Activity implements View.OnClickListener, Che
                     Log.e("email", "Unknown......");
                 }
 
-                intent.putExtra("loginInfo",xUsername);
+                IoTUser localuser = new IoTUser();
+                localuser.setUsername(xUsername);
+                localuser.setEmail(email);
+                localuser.setPassword(""); //防止出错？
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("user_info", localuser);
+                Intent intent = new Intent(LoginActivity.this, DrawerActivity.class);
+                intent.putExtras(bundle);
+
+ //               intent.putExtra("loginInfo",xUsername);
 
                 progressDialog.dismiss();
                 onLoginSuccess();
@@ -242,6 +253,11 @@ public class LoginActivity extends Activity implements View.OnClickListener, Che
             case R.id.auto_login_check: //下次自动登录
                 auto_check = auto_login_check.isCheck();
                 Tools.writeCheckStatetoSharedPreferences(sp,"auto_login_check", auto_check);
+
+                password_check.setChecked(true);
+                account_check = password_check.isCheck();
+                Tools.writeCheckStatetoSharedPreferences(sp,"account_check", account_check);
+
                 break;
             default:
                 break;

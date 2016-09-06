@@ -2,19 +2,20 @@ package com.pearl.smartdevicemanager.tools;
 
 import android.content.SharedPreferences;
 
-import com.pearl.smartdevicemanager.beans.IoTUsers;
+import com.pearl.smartdevicemanager.beans.IoTUser;
+
 
 /**
  * Created by Administrator on 08/08/2016.
  */
 public class Tools {
-    public static IoTUsers readfromSharedPreferences(SharedPreferences sp){
+    public static IoTUser readfromSharedPreferences(SharedPreferences sp){
         SharedPreferences spw = sp;
         //SharedPreferences.Editor editor = sp.edit();
         String name = sp.getString("username", null);
         String email = sp.getString("email",null);
         String pwd = sp.getString("password", null);
-        IoTUsers user = new IoTUsers(name,email,pwd);
+        IoTUser user = new IoTUser(name,email,pwd);
         return user;
     }
     public static void writetoSharedPreferences(SharedPreferences sp,String username, String email, String pwd){

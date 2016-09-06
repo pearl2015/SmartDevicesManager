@@ -19,4 +19,9 @@
 
 1. 通过intent将用户信息从登录界面传递到主界面中；
 2. 使用 DrawerLayout 实现 Material Design风格的侧滑
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 7a847c024a393943eaa7da4fd0612b8dfd2ecd08
 

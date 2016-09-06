@@ -23,11 +23,13 @@ import android.widget.Toast;
 
 
 import com.pearl.smartdevicemanager.R;
+import com.pearl.smartdevicemanager.beans.IoTUser;
 import com.pearl.smartdevicemanager.deviceCenter.DeviceFragment;
 import com.pearl.smartdevicemanager.userCenter.UserFragment;
 
+//必须实现
 public class DrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, UserFragment.OnFragmentInteractionListener,MainView {
+        implements NavigationView.OnNavigationItemSelectedListener, UserFragment.OnFragmentInteractionListener,DeviceFragment.OnFragmentInteractionListener,MainView {
 //
 //    @BindView(R.id.fab) FloatingActionButton fab;
 //    @BindView(R.id.drawer_layout) DrawerLayout drawer;
@@ -35,11 +37,18 @@ public class DrawerActivity extends AppCompatActivity
 //    @BindView(R.id.username_tv) TextView usernname_tv;
       private String musername;
       private TextView m_username;
+      private String memail;
+      private IoTUser local_user;
+
 
     //返回键退出
     private long exitTime = 0;
     //
     private MainPresenter myPresenter;
+
+    //fragment
+    FragmentManager fragmentManager;
+    FragmentTransaction transaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +81,10 @@ public class DrawerActivity extends AppCompatActivity
 
         //从登陆界面获得用户名
         Intent intent = getIntent();
-        musername = intent.getStringExtra("loginInfo");
+        local_user = new IoTUser();
+        local_user = (IoTUser)intent.getSerializableExtra("user_info");
         //显示
-        m_username.setText(musername);
+        m_username.setText(local_user.getUsername());
 
     }
 
@@ -120,11 +130,12 @@ public class DrawerActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(MenuItem item) {  //监听导航栏
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+        fragmentManager = getSupportFragmentManager();
+        transaction = fragmentManager.beginTransaction();
 
         if (id == R.id.user_ic) {
             // Handle the camera action
@@ -136,7 +147,7 @@ public class DrawerActivity extends AppCompatActivity
 
         } else if (id == R.id.devices_ic) {
             DeviceFragment deviceFragment = new DeviceFragment();
-            transaction.replace(R.id.fragment_container, deviceFragment);
+            transaction.replace(R.id.fragment_container, deviceFragment).commit();
         } else if (id == R.id.share_ic) {
 
         }
@@ -148,6 +159,6 @@ public class DrawerActivity extends AppCompatActivity
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-        Toast.makeText(getApplicationContext(),"sfa", Toast.LENGTH_SHORT).show();
+
     }
 }
