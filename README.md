@@ -18,7 +18,13 @@
 <img src="https://github.com/pearl2015/SmartDevicesManager/blob/master/pic/main2.png?raw=ture" width="40%" height="50%">
 
 1. 通过intent将用户信息从登录界面传递到主界面中；
-2. 使用 DrawerLayout 实现 Material Design风格的侧滑
+2. 使用 DrawerLayout 实现 Material Design风格的侧滑；
+3. 实现NavigationLayout；
+4. NavigationView与Fragment切换；
+5. 用户信息用Serializable序列化，bunble传递；
+
+<img src="https://github.com/pearl2015/SmartDevicesManager/blob/master/pic/user_record.gif?raw=ture" width="40%" height="50%">
+
 <<<<<<< HEAD
 =======
 
